@@ -9,7 +9,7 @@ def main():
         result = add(a, b)
         print(f"Результат: {result}")
     except ValueError:
-        print("Ошибка: введите числа")
+        print("Ошибка: введите числа!")
 
 
 if __name__ == "__main__":
