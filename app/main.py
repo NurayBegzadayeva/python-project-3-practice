@@ -4,8 +4,8 @@ def add(a: float, b: float) -> float:
 
 def main():
     try:
-        a = float(input("Введите первое число: "))
-        b = float(input("Введите второе число: "))
+        a = float(input("Введите 1 число: "))
+        b = float(input("Введите 2 число: "))
         result = add(a, b)
         print(f"Результат: {result}")
     except ValueError:
