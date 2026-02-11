@@ -39,7 +39,6 @@ jobs:
         run: |
           mkdir -p ~/test_env
           cp -r app ~/test_env/
-          cp main.py ~/test_env/  # если main.py вне папки app
           echo "Deployed to ~/test_env"
 
       #Запуск приложения в фоне
