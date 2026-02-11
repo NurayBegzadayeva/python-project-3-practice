@@ -1,0 +1,49 @@
+name: CD to Test Environment
+
+# Запуск только после успешного CI
+on:
+  workflow_run:
+    workflows: ["Python CI"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      #Получение кода
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      #Установка Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      #Установка зависимостей
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      #Подготовка артефакта (для простого проекта можно оставить файл как есть)
+      - name: Prepare artifact
+        run: |
+          echo "Artifact ready: app/main.py"
+
+      #Деплой в тестовую среду
+      - name: Deploy to test folder
+        run: |
+          mkdir -p ~/test_env
+          cp -r app ~/test_env/
+          cp main.py ~/test_env/  # если main.py вне папки app
+          echo "Deployed to ~/test_env"
+
+      #Запуск приложения в фоне
+      - name: Run application in background
+        run: |
+          nohup python ~/test_env/app/main.py &
+          echo "Application running in test environment"
